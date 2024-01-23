@@ -1,6 +1,10 @@
+using Fga.Net.AspNetCore;
+using Fga.Net.AspNetCore.Authorization;
+using Fga.Net.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 
@@ -12,47 +16,70 @@ namespace _1_Simple_AuthN
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddMicrosoftIdentityWebApi(jwtOptions =>
-            //        {
-            //                jwtOptions.TokenValidationParameters.ValidAudience = "ed36281d-955a-4da4-898d-c3f2187767e7";
-            //                //jwtOptions.TokenValidationParameters.ValidIssuer = "a47078d6-821c-4b28-a3a5-efd2bfb61aed";
-            //        },
-            //        identityOptions =>
-            //        {
-            //            //identityOptions.Domain = "omaha.dev";
-            //            identityOptions.Instance = "https://login.microsoftonline.com/";
-            //            identityOptions.TenantId = "a47078d6-821c-4b28-a3a5-efd2bfb61aed";
-            //            identityOptions.ClientId = "ed36281d-955a-4da4-898d-c3f2187767e7";
-                        
-            //        });
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(jwtOptions =>
+                    {
+                        jwtOptions.TokenValidationParameters.ValidAudience = "ed36281d-955a-4da4-898d-c3f2187767e7";
+                        //jwtOptions.TokenValidationParameters.ValidIssuer = "a47078d6-821c-4b28-a3a5-efd2bfb61aed";
+                    },
+                    identityOptions =>
+                    {
+                        //identityOptions.Domain = "omaha.dev";
+                        identityOptions.Instance = "https://login.microsoftonline.com/";
+                        identityOptions.TenantId = "a47078d6-821c-4b28-a3a5-efd2bfb61aed";
+                        identityOptions.ClientId = "ed36281d-955a-4da4-898d-c3f2187767e7";
 
-            //builder.Services.AddAuthorization(authOpt =>
-            //{
-            //    authOpt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-            //    authOpt.AddPolicy("Reader", policy =>
-            //    {
-            //        policy.RequireRole("Application.Read", "Application.Write");
-            //    });
-            //    authOpt.AddPolicy("Writer", policy =>
-            //    {
-            //        policy.RequireRole("Application.Write");
-            //    });
-            //});
+                    });
+
+            builder.Services.AddOpenFgaClient(config =>
+            {
+                config.SetStoreId("01HK63XHDNKS77T0V6QBP73R1N");
+                config.ConfigureOpenFga(fgaConfig =>
+                {
+                    fgaConfig.SetConnection("http://localhost:8080");
+                });
+            });
+
+            builder.Services.AddOpenFgaMiddleware(config =>
+            {
+                config.SetUserIdentifier("user", principal => $"{principal.Identity!.Name!}");
+            });
+
+            builder.Services.AddAuthorization(authOpt =>
+            {
+                authOpt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                authOpt.AddPolicy("Reader", policy =>
+                {
+                    policy.RequireRole("Application.Read", "Application.Write");
+                });
+
+                authOpt.AddPolicy("Writer", policy =>
+                {
+                    policy.RequireRole("Application.Write");
+                });
+
+                //Add the FGA policy
+                authOpt.AddPolicy(FgaAuthorizationDefaults.PolicyKey, p => p
+                    .RequireAuthenticatedUser()
+                    .RequireRole("Application.User")
+                    .AddFgaRequirement());
+            });
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            //Add AuthZ and AuthN to the request pipeline
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
+
+            //Show sensitive information in debug window
             IdentityModelEventSource.ShowPII = true;
             IdentityModelEventSource.LogCompleteSecurityArtifact = true;
+
             app.Run();
         }
     }

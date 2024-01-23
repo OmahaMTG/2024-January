@@ -1,4 +1,6 @@
 using _1_Simple_AuthN.Models;
+using Fga.Net.AspNetCore.Authorization;
+using Fga.Net.AspNetCore.Authorization.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,12 +8,14 @@ namespace _1_Simple_AuthN.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
+    [Authorize(FgaAuthorizationDefaults.PolicyKey)]
     public class FolderController : ControllerBase
     {
         private readonly Folder _folders = DemoData.RootFolder;
         
         [HttpGet("/[controller]/{path}")]
         //[Authorize(Policy = "Reader")]
+        [FgaRouteObject("viewer", "folder", nameof(path))]
         public IActionResult Get(string path)
         
         {
