@@ -34,10 +34,10 @@ namespace _1_Simple_AuthN
 
             builder.Services.AddOpenFgaClient(config =>
             {
-                config.SetStoreId("01HK63XHDNKS77T0V6QBP73R1N");
+                config.SetStoreId(Constants.StoreID);
                 config.ConfigureOpenFga(fgaConfig =>
                 {
-                    fgaConfig.SetConnection("http://localhost:8080");
+                    fgaConfig.SetConnection(Constants.ApiUrl);
                 });
             });
 

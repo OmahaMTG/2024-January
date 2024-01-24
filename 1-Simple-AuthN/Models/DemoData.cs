@@ -2,11 +2,11 @@
 {
     public static class DemoData
     {
-        public static Folder RootFolder => new("Root")
+        public static Folder RootFolder => new("Root", new User("matt@omaha.dev"))
         {
             SubFolders = new List<Folder>()
             {
-                new Folder("Omaha")
+                new Folder("Omaha", new User("Demo-Omaha@omaha.dev")) // haKL^2>`Y59eO;8
                 {
                     Files = new List<File>()
                     {
@@ -22,7 +22,7 @@
 
                     }
                 },
-                new Folder("Lincoln")
+                new Folder("Lincoln", new User("Demo-Lincoln@omaha.dev")) // uY7xLQ2S8}T'3?[
                 {
                     Files = new List<File>()
                     {
@@ -37,7 +37,7 @@
                         new File("file-Lincoln-9", Guid.NewGuid().ToString())
                     }
                 },
-                new Folder("Denver")
+                new Folder("Denver", new User("Demo-Denver@omaha.dev")) // <1'+t54&Cl}*reo
                 {
                     Files = new List<File>()
                     {

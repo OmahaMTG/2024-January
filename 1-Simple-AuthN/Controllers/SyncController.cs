@@ -10,15 +10,15 @@ namespace _1_Simple_AuthN.Controllers
     [ApiController]
     public class SyncController : ControllerBase
     {
-        private OpenFgaClient _fgaClient;
+        private readonly OpenFgaClient _fgaClient;
 
         public SyncController()
         {
             var configuration = new ClientConfiguration()
             {
-                ApiUrl = "http://localhost:8080",
-                StoreId = "01HK63XHDNKS77T0V6QBP73R1N",
-                AuthorizationModelId = "01HMVKFSBPJSVR74M6HP3GCFZE"
+                ApiUrl = Constants.ApiUrl,
+                StoreId = Constants.StoreID,
+                AuthorizationModelId = Constants.AuthorizationModelId
             };
             _fgaClient = new OpenFgaClient(configuration);
         }
@@ -38,6 +38,7 @@ namespace _1_Simple_AuthN.Controllers
                 currentParentPath = currentParentPath.Substring(0, currentParentPath.Length - 1);
             }
 
+            //Add Folder
             var body = new ClientWriteRequest()
             {
                 Writes = new List<ClientTupleKey>() {
@@ -46,10 +47,16 @@ namespace _1_Simple_AuthN.Controllers
                         User = $"folder:{currentParentPath}|{currentFolder.Name}",
                         Relation = "parent",
                         Object = $"folder:{(string.IsNullOrWhiteSpace(currentParentPath) ? "|" : currentParentPath)}"
+                    },
+                    new() {
+                        User = $"user:{currentFolder.Owner.Name}",
+                        Relation = "owner",
+                        Object = $"folder:{(string.IsNullOrWhiteSpace(currentParentPath) ? "|" : currentParentPath)}"
                     }
                 },
             };
 
+            //Add Files
             foreach (var file in currentFolder.Files)
             {
                 body.Writes.Add(
@@ -57,7 +64,7 @@ namespace _1_Simple_AuthN.Controllers
                     {
                         User = $"folder:{currentParentPath}|{currentFolder.Name}",
                         Relation = "parent",
-                        Object = $"document:{file.Name}"
+                        Object = $"doc:{file.Name}"
                     });
             }
 
