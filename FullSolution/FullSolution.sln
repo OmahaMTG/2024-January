@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1-Simple-AuthN", "1-Simple-AuthN.csproj", "{44F75D6A-9BF1-4D2D-9303-D484E0F93AF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullSolution", "FullSolution.csproj", "{44F75D6A-9BF1-4D2D-9303-D484E0F93AF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
