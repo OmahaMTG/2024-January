@@ -1,22 +1,17 @@
-using System.Reflection.Metadata.Ecma335;
-using _1_Simple_AuthN.Models;
-using Fga.Net.AspNetCore.Authorization;
-using Fga.Net.AspNetCore.Authorization.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RBAC.Models;
 
-namespace _1_Simple_AuthN.Controllers
+namespace RBAC.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    [Authorize(FgaAuthorizationDefaults.PolicyKey)]
     public class FolderController : ControllerBase
     {
         private readonly Folder _folders = DemoData.RootFolder;
 
         [HttpGet("/[controller]/{path}")]
-        //[Authorize(Policy = "Reader")]
-        [FgaRouteObject("viewer", "folder", nameof(path))]
+        [Authorize(Policy = "Reader")]
         public IActionResult Get(string path)
 
         {
@@ -31,8 +26,7 @@ namespace _1_Simple_AuthN.Controllers
         }
 
         [HttpPost("/[controller]/{path}")]
-        //[Authorize(Policy = "Reader")]
-        [FgaRouteObject("owner", "folder", nameof(path))]
+        [Authorize(Policy = "Writer")]
         public IActionResult Post(string path)
 
         {
