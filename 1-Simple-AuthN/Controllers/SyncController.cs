@@ -39,19 +39,19 @@ namespace _1_Simple_AuthN.Controllers
             }
 
             //Add Folder
+            var folderPath = $"folder:{currentParentPath}|{currentFolder.Name}";
             var body = new ClientWriteRequest()
             {
                 Writes = new List<ClientTupleKey>() {
-                    // the notes folder is a parent of the meeting notes document
                     new() {
-                        User = $"folder:{currentParentPath}|{currentFolder.Name}",
+                        User = $"folder:{(string.IsNullOrWhiteSpace(currentParentPath) ? "|" : currentParentPath)}",
                         Relation = "parent",
-                        Object = $"folder:{(string.IsNullOrWhiteSpace(currentParentPath) ? "|" : currentParentPath)}"
+                        Object = folderPath
                     },
                     new() {
                         User = $"user:{currentFolder.Owner.Name}",
                         Relation = "owner",
-                        Object = $"folder:{(string.IsNullOrWhiteSpace(currentParentPath) ? "|" : currentParentPath)}"
+                        Object = folderPath
                     }
                 },
             };
@@ -62,7 +62,7 @@ namespace _1_Simple_AuthN.Controllers
                 body.Writes.Add(
                     new()
                     {
-                        User = $"folder:{currentParentPath}|{currentFolder.Name}",
+                        User = folderPath,
                         Relation = "parent",
                         Object = $"doc:{file.Name}"
                     });

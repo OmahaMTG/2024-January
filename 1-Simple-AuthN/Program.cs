@@ -3,8 +3,6 @@ using Fga.Net.AspNetCore.Authorization;
 using Fga.Net.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 
@@ -15,13 +13,14 @@ namespace _1_Simple_AuthN
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Logging.AddFilter("Fga.Net.AspNetCore.Authorization.FineGrainedAuthorizationHandler", LogLevel.Debug);
 
             builder.Services.AddControllers();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(jwtOptions =>
                     {
                         jwtOptions.TokenValidationParameters.ValidAudience = "ed36281d-955a-4da4-898d-c3f2187767e7";
-                        //jwtOptions.TokenValidationParameters.ValidIssuer = "a47078d6-821c-4b28-a3a5-efd2bfb61aed";
+                        jwtOptions.TokenValidationParameters.ValidIssuer = "a47078d6-821c-4b28-a3a5-efd2bfb61aed";
                     },
                     identityOptions =>
                     {
@@ -62,7 +61,7 @@ namespace _1_Simple_AuthN
                 //Add the FGA policy
                 authOpt.AddPolicy(FgaAuthorizationDefaults.PolicyKey, p => p
                     .RequireAuthenticatedUser()
-                    .RequireRole("Application.User")
+                    .RequireRole("Application.Read")
                     .AddFgaRequirement());
             });
 

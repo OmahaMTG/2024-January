@@ -1,10 +1,10 @@
-﻿namespace _1_Simple_AuthN.Models
+﻿namespace _1_Simple_AuthN.Models;
+
+public static class DemoData
 {
-    public static class DemoData
+    public static Folder RootFolder => new("Root", new User("matt@omaha.dev"))
     {
-        public static Folder RootFolder => new("Root", new User("matt@omaha.dev"))
-        {
-            SubFolders = new List<Folder>()
+        SubFolders = new List<Folder>()
             {
                 new Folder("Omaha", new User("Demo-Omaha@omaha.dev")) // haKL^2>`Y59eO;8
                 {
@@ -53,6 +53,5 @@
                     }
                 }
             }
-        };
-    }
+    };
 }
