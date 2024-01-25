@@ -1,4 +1,4 @@
-namespace _1_Simple_AuthN.Models
+namespace FullSolution.Models
 {
     public class File(string name, string content)
     {

@@ -1,10 +1,9 @@
-﻿using _1_Simple_AuthN.Models;
-using Microsoft.AspNetCore.Http;
+﻿using FullSolution.Models;
 using Microsoft.AspNetCore.Mvc;
 using OpenFga.Sdk.Client;
 using OpenFga.Sdk.Client.Model;
 
-namespace _1_Simple_AuthN.Controllers
+namespace FullSolution.Controllers
 {
     [Route("[controller]")]
     [ApiController]

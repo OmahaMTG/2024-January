@@ -1,4 +1,4 @@
-﻿namespace _1_Simple_AuthN
+﻿namespace FullSolution
 {
     public static class Constants
     {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 
-namespace _1_Simple_AuthN
+namespace FullSolution
 {
     public class Program
     {

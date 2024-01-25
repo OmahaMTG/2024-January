@@ -1,11 +1,10 @@
-using System.Reflection.Metadata.Ecma335;
-using _1_Simple_AuthN.Models;
 using Fga.Net.AspNetCore.Authorization;
 using Fga.Net.AspNetCore.Authorization.Attributes;
+using FullSolution.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace _1_Simple_AuthN.Controllers
+namespace FullSolution.Controllers
 {
     [ApiController]
     [Route("/[controller]")]

@@ -1,12 +1,17 @@
-﻿namespace _1_Simple_AuthN.Models;
+﻿namespace FullSolution.Models;
 
 public static class DemoData
 {
+    //Demo-Omaha@omaha.dev   : haKL^2>`Y59eO;8
+    //Demo-Lincoln@omaha.dev : uY7xLQ2S8}T'3?[
+    //Demo-Denver@omaha.dev  : <1'+t54&Cl}*reo
+    //Demo-Chicago@omaha.dev : /xY"G4,996fN
+    //Demo-Dallas@omaha.dev  : G,=9wo5gxD4n
     public static Folder RootFolder => new("Root", new User("matt@omaha.dev"))
     {
         SubFolders = new List<Folder>()
             {
-                new Folder("Omaha", new User("Demo-Omaha@omaha.dev")) // haKL^2>`Y59eO;8
+                new Folder("Omaha", new User("Demo-Omaha@omaha.dev")) // 
                 {
                     Files = new List<File>()
                     {
@@ -22,7 +27,7 @@ public static class DemoData
 
                     }
                 },
-                new Folder("Lincoln", new User("Demo-Lincoln@omaha.dev")) // uY7xLQ2S8}T'3?[
+                new Folder("Lincoln", new User("Demo-Lincoln@omaha.dev"))
                 {
                     Files = new List<File>()
                     {
@@ -37,7 +42,7 @@ public static class DemoData
                         new File("file-Lincoln-9", Guid.NewGuid().ToString())
                     }
                 },
-                new Folder("Denver", new User("Demo-Denver@omaha.dev")) // <1'+t54&Cl}*reo
+                new Folder("Denver", new User("Demo-Denver@omaha.dev"))
                 {
                     Files = new List<File>()
                     {
